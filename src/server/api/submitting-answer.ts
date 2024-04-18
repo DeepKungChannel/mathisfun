@@ -19,8 +19,6 @@ export default async function submittingAnswer(id: number, answer: string) {
 
     let pass = false;
     if (parseFloat(mathproblem.answer) == parseFloat(answer)) pass = true
-    console.log(mathproblem.answer)
-    console.log(answer)
     await db.insert(submissions).values({userId: user.userId, pass})
 
     return {"result": pass}

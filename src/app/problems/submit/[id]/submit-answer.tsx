@@ -19,9 +19,7 @@ export default function SubmitAnswer ({id}: {id: number}) {
             return;
         }
 
-        console.log(typeof(answer))
         setChecking(true)
-        console.log("inprocess")
         const {result} = await submittingAnswer(id, answer)
         if (result) toast.success("ยินดีด้วยคุณผ่านแล้วว เย้!!")
         else toast.error("ไม่น้า คำตอบของคุณผิด T-T")

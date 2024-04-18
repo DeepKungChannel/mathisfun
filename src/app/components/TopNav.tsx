@@ -14,7 +14,7 @@ export default function TopNav() {
             <div className={`${!show ? "opacity-0 invisible" : "opacity-100 visible"} text-lg md:text-base
             md:opacity-100 md:visible absolute top-14 left-0 right-0 md:top-0 bg-gray-800 
             text-center space-y-7 md:space-y-0 py-5 md:py-0 md:bg-none md:static 
-            md:flex items-center gap-6 h-full md:text-gray-300  md:pb-[1px]`}>
+            md:flex items-center gap-6 md:text-gray-300  md:pb-[1px]`}>
                 <div><Link href='/' className="md:ml-5" onClick={() => setShow(false)}>Home</Link></div>
                 <div><Link href='/problems' onClick={() => setShow(false)}>Problem</Link></div>
                 <div><Link href='/' onClick={() => setShow(false)}>Leaderboard</Link></div>
