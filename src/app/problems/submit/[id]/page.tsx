@@ -46,7 +46,7 @@ export default async function page({params}: {params: { id: string }}) {
     }
     let pass = false;
     const solved_math_problem = await db.query.solved_math_problem.findFirst({
-        where: (smp, {eq}) => eq(smp.userId, user.userId),
+        where: (smp, {eq, and}) => and(eq(smp.id, mathproblem.id), eq(smp.userId, user.userId)),
     })
 
     if (solved_math_problem) pass = true
