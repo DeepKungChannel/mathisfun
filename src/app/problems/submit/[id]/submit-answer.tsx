@@ -6,11 +6,13 @@ import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import submittingAnswer from '~/server/api/submitting-answer'
 import { toast } from "sonner"
+import { useRouter } from 'next/navigation'
 
 
-export default function SubmitAnswer ({id}: {id: number}) {
+export default function SubmitAnswer ({id, pass}: {id: number, pass:boolean}) {
     const [checking, setChecking] = useState(false);
-    const [passed, setPassed] = useState<number | undefined>(undefined);
+    const [pass2, setPass] = useState(false);
+    const router = useRouter()
 
     const InputTag = useRef<HTMLInputElement| null>(null)
 
@@ -18,11 +20,19 @@ export default function SubmitAnswer ({id}: {id: number}) {
         if (checking) {
             return;
         }
+        if (pass) return;
 
         setChecking(true)
-        const {result} = await submittingAnswer(id, answer)
-        if (result) toast.success("ยินดีด้วยคุณผ่านแล้วว เย้!!")
+        toast.loading("กําลังตรวจสอบคำตอบของคุณ...", {id: "checking-answer"})
+        const {result: correct} =  await submittingAnswer(id, answer)
+        toast.dismiss("checking-answer")
+        if(correct) {
+            toast.success("ยินดีด้วยคุณผ่านแล้วว เย้!!")
+            setPass(true)
+            router.refresh()
+        }
         else toast.error("ไม่น้า คำตอบของคุณผิด T-T")
+        
         setChecking(false)
     }
 
@@ -30,8 +40,8 @@ export default function SubmitAnswer ({id}: {id: number}) {
         <>
         <form onSubmit={(e) => { CheckAnswer(InputTag.current!.value); e.preventDefault()}}>
             <Label htmlFor="answer" className='text-[1.06rem] pl-1'>คำตอบ</Label>
-            <Input ref={InputTag} type='text' placeholder='xx.xx' id="answer" className='mt-1 mb-5 focus-visible:ring-0 focus: ring-0' />
-            <Button type='submit'>ส่งคำตอบ</Button>
+            <Input disabled={pass2 || pass} ref={InputTag} type='text' placeholder='xx.xx' id="answer" className='mt-1 mb-5 focus-visible:ring-0 focus: ring-0' />
+            <Button type='submit' disabled={pass2 || pass}>ส่งคำตอบ</Button>
         </form>
         </>
     )

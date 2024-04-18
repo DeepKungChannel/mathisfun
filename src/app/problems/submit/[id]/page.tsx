@@ -44,13 +44,28 @@ export default async function page({params}: {params: { id: string }}) {
     if (!mathproblem) {
         return <ErrorPage />
     }
+    let pass = false;
+    const solved_math_problem = await db.query.solved_math_problem.findFirst({
+        where: (smp, {eq}) => eq(smp.problemId, mathproblem.id),
+    })
+
+    if (solved_math_problem) pass = true
 
     return (
         <>
             <div className='pt-[7rem] px-10 font-kanit'>
-                <h1 className='mb-5 text-xl'>ส่งคำตอบข้อ:&nbsp;&nbsp;&nbsp; <span className='font-semibold text-2xl underline-offset-2 underline'>{mathproblem.name}</span></h1>
-                <SubmitAnswer id={mathproblem.id}/>
+                <h1 className='mb-5 text-xl'><pre className='whitespace-pre-wrap'><span className='font-kanit'>ส่งคำตอบข้อ:</span>  <span className="font-kanit font-semibold text-2xl underline underline-offset-2">{mathproblem.name}</span></pre></h1>
+                <SubmitAnswer id={mathproblem.id} pass={pass}/>
             </div>
+
+            {
+                pass && (
+                    <div className='px-10 mt-5 font-kanit'>
+                        <h2 className='md:text-lg'>คุณได้ทำโจทย์ข้อนี้เรียบร้อยแล้ว</h2>
+                        <p>โปรดรออีก 2 ชั่วโมง คุณจึงสามารถทำโจทย์ข้อนี้ซ้ำได้</p>
+                    </div>
+                )
+            }
         </>
     )
 }

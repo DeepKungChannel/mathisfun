@@ -2,7 +2,7 @@
 
 import { auth } from "@clerk/nextjs/server"
 import { db } from "../db"
-import { submissions } from "../db/schema"
+import { solved_math_problem, submissions } from "../db/schema"
 
 
 export default async function submittingAnswer(id: number, answer: string) {
@@ -19,6 +19,13 @@ export default async function submittingAnswer(id: number, answer: string) {
 
     let pass = false;
     if (parseFloat(mathproblem.answer) == parseFloat(answer)) pass = true
+
+    const result = await db.query.solved_math_problem.findFirst({
+        where: (smp, {eq}) => eq(solved_math_problem.problemId, mathproblem.id),
+    })
+    
+    if (pass && !result) await db.insert(solved_math_problem).values({userId: user.userId, problemId: mathproblem.id})
+    
     await db.insert(submissions).values({userId: user.userId, pass})
 
     return {"result": pass}

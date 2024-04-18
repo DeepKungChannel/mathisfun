@@ -50,3 +50,14 @@ export const submissions = createTable(
     pass: boolean("pass").notNull(),
   }
 );
+export const solved_math_problem = createTable(
+  "solved_math_problem",
+  {
+    id: serial("id").primaryKey(),
+    userId: varchar("user_id", {length: 256}).notNull(),
+    problemId: integer("problemid").notNull(),
+    solvedAt: timestamp("solved_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull()
+  }
+);
