@@ -21,9 +21,9 @@ export default async function submittingAnswer(id: number, answer: string) {
     if (parseFloat(mathproblem.answer) == parseFloat(answer)) pass = true
 
     const result = await db.query.solved_math_problem.findFirst({
-        where: (smp, {eq}) => eq(solved_math_problem.problemId, mathproblem.id),
+        where: (smp, {eq, and}) => and(eq(smp.problemId, mathproblem.id),eq(smp.userId, user.userId)),
     })
-    
+
     if (pass && !result) await db.insert(solved_math_problem).values({userId: user.userId, problemId: mathproblem.id})
     
     await db.insert(submissions).values({userId: user.userId, pass})
