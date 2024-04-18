@@ -74,6 +74,7 @@ const config = {
       },
       fontFamily: {
         montserrat: ["var(--font-montserrat)"],
+        kanit: ["var(--font-kanit)"],
       }
     },
   },

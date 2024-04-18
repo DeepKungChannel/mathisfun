@@ -8,6 +8,9 @@ import {
   serial,
   timestamp,
   varchar,
+  integer,
+  numeric,
+  boolean
 } from "drizzle-orm/pg-core";
 
 /**
@@ -18,8 +21,8 @@ import {
  */
 export const createTable = pgTableCreator((name) => `mathisfun_${name}`);
 
-export const posts = createTable(
-  "post",
+export const mathProblems = createTable(
+  "math_problems",
   {
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 256 }),
@@ -27,8 +30,23 @@ export const posts = createTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt"),
+    url: varchar("url", { length: 256 }).notNull(),
+    gs: integer("gs").notNull(),
+    answer: varchar("answer", { length: 256 }).notNull(),
   },
   (example) => ({
     nameIndex: index("name_idx").on(example.name),
   })
+);
+
+export const submissions = createTable(
+  "math_submissions",
+  {
+    id: serial("id").primaryKey(),
+    userId: varchar("userid", {length: 256}).notNull(),
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    pass: boolean("pass").notNull(),
+  }
 );

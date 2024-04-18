@@ -1,10 +1,9 @@
 import "~/styles/globals.css";
-
-import { Inter, Montserrat } from "next/font/google";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
+import { ClerkProvider } from '@clerk/nextjs'
+import { Inter, Kanit, Montserrat } from "next/font/google";
 import TopNav from "./components/TopNav";
 import { NextFontWithVariable } from "next/dist/compiled/@next/font";
+import { Toaster } from "~/components/ui/sonner"
 
 const inter = Inter({
     subsets: ["latin"],
@@ -18,6 +17,12 @@ const montserrat = Montserrat({
     display: "swap",
 })
 
+const kanit = Kanit({
+    subsets: ["latin", "thai"],
+    weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
+    variable: "--font-kanit",
+})
+
 export const metadata = {
     title: "Math is fun. Guys!",
     description: "Website that help people learn math in fun way",
@@ -25,7 +30,7 @@ export const metadata = {
 };
 
 function getAllfontClass() {
-    const fonts = [inter, montserrat] as NextFontWithVariable[]
+    const fonts = [inter, montserrat, kanit] as NextFontWithVariable[]
     return fonts.map((font) => font.variable).join(" ")
 }
 
@@ -35,11 +40,14 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en">
-            <body className={`font-sans ${getAllfontClass()} font-montserrat text-black`}>
-                <TopNav/> 
-                {children}
-            </body>
-        </html>
+        <ClerkProvider>
+            <html lang="en">
+                <body className={`font-sans ${getAllfontClass()} font-montserrat text-black`}>
+                    <TopNav/>
+                    {children}
+                    <Toaster richColors/>
+                </body>
+            </html>
+        </ClerkProvider>
     );
 }
