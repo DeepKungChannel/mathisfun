@@ -57,7 +57,10 @@ export const solved_math_problem = createTable(
     id: serial("id").primaryKey(),
     userId: varchar("user_id", {length: 256}).notNull(),
     problemId: integer("problemid").notNull(),
-    solvedAt: timestamp("solved_at")
+    firstSolvedAt: timestamp("first_solved_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    lastSolvedAt: timestamp("last_solved_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull()
   }

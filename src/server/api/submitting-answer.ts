@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs/server"
 import { db } from "../db"
 import { mathProblems, solved_math_problem, submissions, users } from "../db/schema"
 import { getUserSolveNumber } from "./getUser"
-import { eq } from "drizzle-orm"
+import { and, eq } from "drizzle-orm"
 
 
 export default async function submittingAnswer(id: number, answer: string) {
@@ -29,12 +29,13 @@ export default async function submittingAnswer(id: number, answer: string) {
     })
 
     if (pass && !result) await db.insert(solved_math_problem).values({userId: user.userId, problemId: mathproblem.id})
+    else if (pass && result) await db.update(solved_math_problem).set({lastSolvedAt: new Date()}).where(eq(solved_math_problem.id, result.id))
     
     await db.insert(submissions).values({userId: user.userId, pass})
 
     // update user solved number
-    const new_solved = await getUserSolveNumber(user.userId) + 1
-    await db.update(users).set({solved: new_solved}).where(eq(users.userId, user.userId))
+    const new_solved_num = await getUserSolveNumber(user.userId)
+    await db.update(users).set({solved: new_solved_num}).where(eq(users.userId, user.userId))
 
     return {"result": pass}
 }
