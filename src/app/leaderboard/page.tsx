@@ -1,15 +1,16 @@
 import { auth } from '@clerk/nextjs/server'
 import React from 'react'
 import LeaderboardTable from './leaderboard-table'
-import getUserData, { getClerkUser } from '~/server/api/getUser'
+import getUserData, { getClerkUser } from '~/server/action/getUser'
 import getTextRank from '~/utils/rankTranslate'
-import getLeaderboardData from '~/server/api/getLeaderboardData'
+import getLeaderboardData from '~/server/action/getLeaderboardData'
 
 export default async function LeaderboardPage() {
     const user = auth()
 
     let clerkuser = await getClerkUser(user.userId)
     const userdata = await getUserData(user.userId)
+    const leaderboard_data = await getLeaderboardData()
 
     return (
         <div className='px-5 pt-20 font-kanit'>
@@ -36,7 +37,7 @@ export default async function LeaderboardPage() {
 
             {/* Leader board section */}
             <h1 className='text-2xl font-normal font-kanit mt-3 mb-3'>Leaderboard</h1>
-            <LeaderboardTable leaderboard_data={await getLeaderboardData()}/> 
+            <LeaderboardTable leaderboard_data={leaderboard_data}/> 
         </div>
     )
 }

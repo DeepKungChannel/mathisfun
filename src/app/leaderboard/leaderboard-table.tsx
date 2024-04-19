@@ -1,5 +1,5 @@
 import React from 'react'
-import { LeaderboardDataType } from '~/server/api/getLeaderboardData'
+import { LeaderboardDataType } from '~/server/action/getLeaderboardData'
 
 export default async function LeaderboardTable({leaderboard_data} : {leaderboard_data: LeaderboardDataType}) {
   

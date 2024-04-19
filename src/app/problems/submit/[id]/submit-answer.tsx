@@ -4,7 +4,7 @@ import React, { useRef, useState } from 'react'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
-import submittingAnswer from '~/server/api/submitting-answer'
+import submittingAnswer from '~/server/action/submitting-answer'
 import { toast } from "sonner"
 import { useRouter } from 'next/navigation'
 
