@@ -45,7 +45,7 @@ export default function RootLayout({
                 <body className={`font-sans ${getAllfontClass()} font-montserrat text-black`}>
                     <TopNav/>
                     {children}
-                    <Toaster richColors/>
+                    <Toaster richColors theme="light"/>
                 </body>
             </html>
         </ClerkProvider>
