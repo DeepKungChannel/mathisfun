@@ -1,5 +1,5 @@
 "use client"
-import { SignedIn, UserButton, UserProfile } from '@clerk/nextjs'
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
@@ -19,12 +19,18 @@ export default function TopNav() {
                 <div><Link href='/problems' onClick={() => setShow(false)}>Problem</Link></div>
                 <div><Link href='/' onClick={() => setShow(false)}>Leaderboard</Link></div>
                 <div><Link href='/' onClick={() => setShow(false)}>Contest</Link></div>
+               
             </div>
             <SignedIn>
                 <div className='ml-auto pr-5 flex items-center'>
                     <UserButton/>
                 </div>
             </SignedIn>
+            <SignedOut>
+                <div className='ml-auto pr-5 mb-[1px]'>
+                    <SignInButton/>
+                </div>
+            </SignedOut>
         </div>
   )
 }
