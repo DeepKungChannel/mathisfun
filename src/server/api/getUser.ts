@@ -16,7 +16,7 @@ export default async function getUserData(userId: string | null) {
 
     if (!user) {
         // Create user data in personal db
-        const username = Clerk_user.fullName || Clerk_user.username
+        const username = Clerk_user.fullName ?? Clerk_user.username
         const solved = await getUserSolveNumber(userId)
         const user_init_data = {
             imageUrl: Clerk_user.imageUrl,
