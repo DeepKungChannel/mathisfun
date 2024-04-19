@@ -2,6 +2,7 @@ import { auth, clerkClient, User } from '@clerk/nextjs/server'
 import React from 'react'
 import LeaderboardTable from './leaderboard-table'
 import getUserData, { getClerkUser } from '~/server/api/getUser'
+import getTextRank from '~/utils/rankTranslate'
 
 export default async function LeaderboardPage() {
     const user = auth()
@@ -21,7 +22,7 @@ export default async function LeaderboardPage() {
                     </div>
 
                     <div>
-                        <p className='text-lg font-light'>Rank: <span>{userdata.rank}</span></p>
+                        <p className='text-lg font-light'>Rank: <span>{getTextRank(userdata.rank)}</span></p>
                         <p className="text-lg font-light">Point: {userdata.point}</p>
                         <p className="text-lg font-light">Solved: {userdata.solved}</p>
                         <p className="text-lg font-light">GS: {userdata.gs}</p>
