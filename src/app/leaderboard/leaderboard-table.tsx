@@ -21,7 +21,12 @@ export default async function LeaderboardTable() {
         {leaderboard_data.map((item, index) => (
           <tr key={index}>
             <td className="text-center border-r-[1px] border-gray-200">{index+1}.</td>
-            <td className="px-3 border-r-[1px] border-gray-200">{item.username}</td>
+            <td className="px-3 py-2 border-r-[1px] border-gray-200">
+              <div className="flex items-center gap-3">
+                {item.imageUrl && (<img src={item.imageUrl} className="w-[1.5rem] h-[1.5rem] rounded-[50%]"></img>)}
+              <p>{item.username}</p>
+              </div> 
+            </td>
             <td className="px-3 border-r-[1px] border-gray-200">{item.rank}</td>
             <td className="text-center border-r-[1px] border-gray-200">{item.solved}</td>
             <td className="text-center">{item.gs}</td>

@@ -28,10 +28,10 @@ export default async function LeaderboardPage() {
                     </div>
 
                 </div>
+                <hr className='mt-5'/>
                 </>
             )}
 
-            <hr className='mt-5'/>
             {/* Leader board section */}
             <h1 className='text-2xl font-normal font-kanit mt-3 mb-3'>Leaderboard</h1>
             <LeaderboardTable/> 

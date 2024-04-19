@@ -38,7 +38,7 @@ export default async function ProblemsPage() {
     return (
         <div className="pt-16 font-kanit">
             
-            <div className='text-2xl p-5'>คลังข้อสอบ</div>
+            <div className='text-2xl p-5'>คลังโจทย์คณิตศาสตร์</div>
             <div>
                 <MathProblemTable data={new_mathproblems} />
             </div>

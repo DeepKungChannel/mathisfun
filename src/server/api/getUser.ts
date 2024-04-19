@@ -19,6 +19,7 @@ export default async function getUserData(userId: string | null) {
         const username = Clerk_user.fullName || Clerk_user.username
         const solved = await getUserSolveNumber(userId)
         const user_init_data = {
+            imageUrl: Clerk_user.imageUrl,
             userId: userId,
             username: username!,
             point: 0,
