@@ -1,6 +1,9 @@
 import React from 'react'
+import getLeaderboardData from '~/server/api/getLeaderboardData'
 
-export default function LeaderboardTable({} : {}) {
+export default async function LeaderboardTable() {
+
+  const leaderboard_data = await getLeaderboardData()
   
   return (
     <div className='px-5'>
@@ -15,13 +18,22 @@ export default function LeaderboardTable({} : {}) {
         </tr>
       </thead>
       <tbody className='w-full font-kanit font-[300]'>
-        <tr>
+        {leaderboard_data.map((item, index) => (
+          <tr key={index}>
+            <td className="text-center border-r-[1px] border-gray-200">{index+1}.</td>
+            <td className="px-3 border-r-[1px] border-gray-200">{item.username}</td>
+            <td className="px-3 border-r-[1px] border-gray-200">{item.rank}</td>
+            <td className="text-center border-r-[1px] border-gray-200">{item.solved}</td>
+            <td className="text-center">{item.gs}</td>
+          </tr>
+        ))}
+        {/* <tr>
           <td className="text-center border-r-[1px] border-gray-200">1.</td>
           <td className="px-3 border-r-[1px] border-gray-200">Siravid Thongsook</td>
           <td className="px-3 border-r-[1px] border-gray-200">Bronze I</td>
           <td className="text-center border-r-[1px] border-gray-200">1</td>
           <td className="text-center">100</td>
-        </tr>
+        </tr> */}
       </tbody>
     </table>
     </div>

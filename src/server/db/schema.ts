@@ -69,6 +69,7 @@ export const users = createTable(
     username: varchar("username", { length: 256 }).notNull(),
     userId: varchar("user_id", { length: 256 }).notNull(),
     email: varchar("email", { length: 256 }),
+    imageUrl: varchar("image_url", { length: 256 }),
     point: integer("point").notNull().default(0),
     rank: integer("rank").notNull().default(0),
     solved: integer("solved").notNull().default(0),

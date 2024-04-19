@@ -52,3 +52,7 @@ export async function getUserSolveNumber(userId:  string) {
     const solved = await db.select({count: count()}).from(solved_math_problem).where(sql`${solved_math_problem.userId} = ${userId}`)
     return solved[0]!.count
 }
+
+export async function getAllUserData() {
+    return await db.query.users.findMany()
+}
