@@ -1,8 +1,9 @@
-import { auth, clerkClient, User } from '@clerk/nextjs/server'
+import { auth } from '@clerk/nextjs/server'
 import React from 'react'
 import LeaderboardTable from './leaderboard-table'
 import getUserData, { getClerkUser } from '~/server/api/getUser'
 import getTextRank from '~/utils/rankTranslate'
+import getLeaderboardData from '~/server/api/getLeaderboardData'
 
 export default async function LeaderboardPage() {
     const user = auth()
@@ -35,7 +36,7 @@ export default async function LeaderboardPage() {
 
             {/* Leader board section */}
             <h1 className='text-2xl font-normal font-kanit mt-3 mb-3'>Leaderboard</h1>
-            <LeaderboardTable/> 
+            <LeaderboardTable leaderboard_data={await getLeaderboardData()}/> 
         </div>
     )
 }

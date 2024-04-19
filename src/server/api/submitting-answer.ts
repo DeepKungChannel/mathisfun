@@ -12,7 +12,6 @@ export default async function submittingAnswer(id: number, answer: string) {
 
     if (!user.userId) return {"result": false}
 
-    console.log("work3")
     const mathproblem = await db.query.mathProblems.findFirst({
         where : (mp, { eq }) => eq(mp.id, id)
     })

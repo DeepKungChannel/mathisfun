@@ -1,4 +1,3 @@
-"use server"
 import { z } from "zod"
 import { getAllUserData } from "./getUser"
 import getTextRank from "~/utils/rankTranslate"
@@ -14,7 +13,7 @@ const leaderboardDataShape = z.array(
     })
 )
 
-type LeaderboardDataType = z.infer<typeof leaderboardDataShape>
+export type LeaderboardDataType = z.infer<typeof leaderboardDataShape>
 
 export default async function getLeaderboardData() {
     const alluserdata = await getAllUserData()
@@ -33,7 +32,7 @@ export default async function getLeaderboardData() {
     })
 
     LeaderboardData.sort((a, b) => b.solved - a.solved)
-    
+
 
     // check shape
     const result = leaderboardDataShape.safeParse(LeaderboardData)

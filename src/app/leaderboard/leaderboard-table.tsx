@@ -1,9 +1,7 @@
 import React from 'react'
-import getLeaderboardData from '~/server/api/getLeaderboardData'
+import { LeaderboardDataType } from '~/server/api/getLeaderboardData'
 
-export default async function LeaderboardTable() {
-
-  const leaderboard_data = await getLeaderboardData()
+export default async function LeaderboardTable({leaderboard_data} : {leaderboard_data: LeaderboardDataType}) {
   
   return (
     <div className='mx-2 md:mx-5 overflow-y-auto'>

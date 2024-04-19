@@ -1,6 +1,6 @@
 "use client"
 import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react'
+import React from 'react'
 
 type MathProblemType = {
     gs: number;
@@ -23,9 +23,7 @@ function SendAnswerSVG({id, pass, ...props} : {id: number, pass: boolean, [x:str
 }
 
 export default function MathProblemTable({data}: {data: MathProblemType}) {
-    useEffect(()=>{
-        console.log(data)
-    }, [])
+    
     return (
         <div className='mx-5 md:mx-10 overflow-y-auto border-[1px] border-gray-200 shadow-md shadow-[#c5c5c5]'>
             <table className='w-full font-kanit'>

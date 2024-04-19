@@ -24,17 +24,24 @@ export default function SubmitAnswer ({id, pass}: {id: number, pass:boolean}) {
 
         setChecking(true)
         toast.loading("กําลังตรวจสอบคำตอบของคุณ...", {id: "checking-answer"})
-        console.log("work1")
-        const {result: correct} =  await submittingAnswer(id, answer)
-        console.log("work2")
-        toast.dismiss("checking-answer")
-        if(correct) {
-            toast.success("ยินดีด้วยคุณผ่านแล้วว เย้!!")
-            setPass(true)
-            router.refresh()
+        try {
+
+            const {result: correct} = await submittingAnswer(id, answer)
+            console.log("work2")
+            toast.dismiss("checking-answer")
+            if(correct) {
+                toast.success("ยินดีด้วยคุณผ่านแล้วว เย้!!")
+                setPass(true)
+                router.refresh()
+            }
+            else toast.error("ไม่น้า คำตอบของคุณผิด T-T")
         }
-        else toast.error("ไม่น้า คำตอบของคุณผิด T-T")
-        
+        catch(e) {
+            toast.dismiss("checking-answer")
+            toast.error("ระบบผิดพลาด")
+            setChecking(false)
+            throw e
+        }
         setChecking(false)
     }
 
