@@ -61,3 +61,17 @@ export const solved_math_problem = createTable(
       .notNull()
   }
 );
+
+export const users = createTable(
+  "users",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 256 }).notNull(),
+    userId: varchar("user_id", { length: 256 }).notNull(),
+    email: varchar("email", { length: 256 }),
+    point: integer("point").notNull().default(0),
+    rank: integer("rank").notNull().default(0),
+    solved: integer("solved").notNull().default(0),
+    gs: integer("gs").notNull().default(100),
+  }
+)
