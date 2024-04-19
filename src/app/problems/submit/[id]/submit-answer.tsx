@@ -24,7 +24,9 @@ export default function SubmitAnswer ({id, pass}: {id: number, pass:boolean}) {
 
         setChecking(true)
         toast.loading("กําลังตรวจสอบคำตอบของคุณ...", {id: "checking-answer"})
+        console.log("work1")
         const {result: correct} =  await submittingAnswer(id, answer)
+        console.log("work2")
         toast.dismiss("checking-answer")
         if(correct) {
             toast.success("ยินดีด้วยคุณผ่านแล้วว เย้!!")
