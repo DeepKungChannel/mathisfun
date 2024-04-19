@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     })
 
     if (!mathproblem) {
-        return {"result": false} // 1: success 0: fail
+        return NextResponse.json({"result": false}) // 1: success 0: fail
     }
 
     let pass = false;
