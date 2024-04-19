@@ -26,8 +26,8 @@ export default function SubmitAnswer ({id, pass}: {id: number, pass:boolean}) {
         toast.loading("กําลังตรวจสอบคำตอบของคุณ...", {id: "checking-answer"})
         try {
 
-            const {result: correct} = await submittingAnswer(id, answer)
-            console.log("work2")
+            const {result: correct} = await fetch("/api/submit", {method: "post", body: JSON.stringify({id, answer})}).then(res => res.json())
+        
             toast.dismiss("checking-answer")
             if(correct) {
                 toast.success("ยินดีด้วยคุณผ่านแล้วว เย้!!")
