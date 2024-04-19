@@ -31,6 +31,7 @@ export const mathProblems = createTable(
       .notNull(),
     updatedAt: timestamp("updatedAt"),
     url: varchar("url", { length: 256 }).notNull(),
+    graderId: varchar("grader_id", {length: 256}).notNull().default("number"),
     gs: integer("gs").notNull(),
     answer: varchar("answer", { length: 256 }).notNull(),
   },

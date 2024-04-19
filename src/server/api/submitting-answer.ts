@@ -2,7 +2,7 @@
 
 import { auth } from "@clerk/nextjs/server"
 import { db } from "../db"
-import { solved_math_problem, submissions, users } from "../db/schema"
+import { mathProblems, solved_math_problem, submissions, users } from "../db/schema"
 import { getUserSolveNumber } from "./getUser"
 import { eq } from "drizzle-orm"
 
@@ -20,7 +20,9 @@ export default async function submittingAnswer(id: number, answer: string) {
     }
 
     let pass = false;
-    if (parseFloat(mathproblem.answer) == parseFloat(answer)) pass = true
+
+    // check if answer is correct
+    pass = checkAnswer(answer, mathproblem)
 
     const result = await db.query.solved_math_problem.findFirst({
         where: (smp, {eq, and}) => and(eq(smp.problemId, mathproblem.id),eq(smp.userId, user.userId)),
@@ -35,4 +37,17 @@ export default async function submittingAnswer(id: number, answer: string) {
     await db.update(users).set({solved: new_solved}).where(eq(users.userId, user.userId))
 
     return {"result": pass}
+}
+
+function checkAnswer(answer: string, mathproblem: typeof mathProblems['_']['inferSelect']) {
+    
+    if (mathproblem.graderId == "number"){
+        if (parseFloat(mathproblem.answer) == parseFloat(answer)) return true
+        else return false
+    }
+    
+    
+    // else or 'string' case
+    if (answer.trim() == mathproblem.answer) return true;
+    return false
 }

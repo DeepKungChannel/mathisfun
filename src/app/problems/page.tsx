@@ -8,7 +8,9 @@ export const revalidate = 30
 
 export default async function ProblemsPage() {
 
-    const mathproblems = await db.query.mathProblems.findMany()
+    const mathproblems = await db.query.mathProblems.findMany({
+        orderBy: (problem, { asc }) => [asc(problem.gs)],
+    })
     const user = auth()
 
     let solved_problems = [] as any[] // come on man it's annoying
@@ -17,6 +19,7 @@ export default async function ProblemsPage() {
             where: (sp, { eq }) => eq(sp.userId, user.userId)
         })
     }
+
     // fillter out answer field
     const new_mathproblems = mathproblems.map(problem=> {
         let {answer, ...rest} = problem as any // modify object perpose
@@ -31,9 +34,6 @@ export default async function ProblemsPage() {
 
         return rest
     })
-
-
-
 
     return (
         <div className="pt-16 font-kanit">
