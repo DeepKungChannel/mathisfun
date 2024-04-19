@@ -66,7 +66,7 @@ export const users = createTable(
   "users",
   {
     id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }).notNull(),
+    username: varchar("username", { length: 256 }).notNull(),
     userId: varchar("user_id", { length: 256 }).notNull(),
     email: varchar("email", { length: 256 }),
     point: integer("point").notNull().default(0),
