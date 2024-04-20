@@ -1,8 +1,7 @@
-import { currentUser } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import getUserData, { getUserSolveNumber } from "~/server/action/getUser";
+import getUserData, { getProblemSolveNumber, getUserSolveNumber } from "~/server/action/getUser";
 import { db } from "~/server/db";
 import { mathProblems, solved_math_problem, submissions, users } from "~/server/db/schema";
 
@@ -37,25 +36,26 @@ export async function POST(request: Request) {
 
     let pass = false
     let receivepoint = 0
-
+    
     // check if answer is correct
     pass = checkAnswer(answer, mathproblem)
-
+    
     const result = await db.query.solved_math_problem.findFirst({
         where: (smp, {eq, and}) => and(eq(smp.problemId, mathproblem.id),eq(smp.userId, userdata.userId)),
     })
 
+    
     // insert submission to database
     if (pass) {
         await db.insert(submissions).values({userId: userdata.userId, problemId: problem_id, pass})
     }
-
+    
     
     // if pass and not solved before (First solved)
     if (pass && !result) {
         // insert solved
         await db.insert(solved_math_problem).values({userId: userdata.userId, problemId: mathproblem.id})
-
+        
         // update user point
         const _user = await db.query.users.findFirst({
             where: (u, { eq }) => eq(u.userId, userdata.userId),
@@ -88,6 +88,10 @@ export async function POST(request: Request) {
     // update user solved number
     const new_solved_num = await getUserSolveNumber(userdata.userId)
     await db.update(users).set({solved: new_solved_num}).where(eq(users.userId, userdata.userId))
+
+    // update solved user count to the problem
+    const solved_count = await getProblemSolveNumber(problem_id)
+    await db.update(mathProblems).set({solved_user_count: solved_count}).where(eq(mathProblems.id, problem_id))
     
     return NextResponse.json({"result": pass, "point": receivepoint})
 }
