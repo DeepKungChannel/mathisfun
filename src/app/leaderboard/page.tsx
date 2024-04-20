@@ -4,12 +4,23 @@ import LeaderboardTable from './leaderboard-table'
 import getUserData, { getClerkUser } from '~/server/action/getUser'
 import getTextRank from '~/utils/rankTranslate'
 import getLeaderboardData from '~/server/action/getLeaderboardData'
+import { db } from '~/server/db'
+import { users } from '~/server/db/schema'
+import { eq } from 'drizzle-orm'
 
 export default async function LeaderboardPage() {
     const user = auth()
 
     let clerkuser = await getClerkUser(user.userId)
     const userdata = await getUserData(user.userId)
+
+    // update user imageUrl if it doesn't match
+    if (clerkuser?.imageUrl !== userdata?.imageUrl && userdata) {
+        const imageUrl = clerkuser?.imageUrl ? clerkuser.imageUrl : undefined
+        await db.update(users).set({imageUrl}).where(eq(users.userId, userdata.userId))
+        console.log(`Update user imageUrl to ${userdata.userId}`)
+    }
+
     const leaderboard_data = await getLeaderboardData()
 
     return (
@@ -27,7 +38,6 @@ export default async function LeaderboardPage() {
                         <p className='text-lg font-light'>Rank: <span>{getTextRank(userdata.rank)}</span></p>
                         <p className="text-lg font-light">Point: {userdata.point}</p>
                         <p className="text-lg font-light">Solved: {userdata.solved}</p>
-                        <p className="text-lg font-light">GS: {userdata.gs}</p>
                     </div>
 
                 </div>

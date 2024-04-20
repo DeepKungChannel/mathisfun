@@ -9,10 +9,10 @@ export default async function LeaderboardTable({leaderboard_data} : {leaderboard
       <thead className='font-montserrat border-b-[1px] border-gray-200'>
         <tr className='font-light'>
           <th className='font-[500] border-r-[1px] border-gray-200 px-3'>No.</th>
-          <th className='font-[500] border-r-[1px] border-gray-200 min-w-[10rem] px-5'>Username</th>
+          <th className='font-[500] border-r-[1px] border-gray-200 min-w-[10rem] px-5 pb-2'>Username</th>
           <th className='font-[500] border-r-[1px] border-gray-200 px-5'>Rank</th>
           <th className='font-[500] border-r-[1px] border-gray-200 px-5'>Solved</th>
-          <th className='font-[500] px-5'>GS</th>
+          <th className='font-[500] px-5'>Point</th>
         </tr>
       </thead>
       <tbody className='w-full font-kanit font-[300]'>
@@ -27,7 +27,7 @@ export default async function LeaderboardTable({leaderboard_data} : {leaderboard
             </td>
             <td className="px-3 border-r-[1px] border-gray-200">{item.rank}</td>
             <td className="text-center border-r-[1px] border-gray-200">{item.solved}</td>
-            <td className="text-center">{item.gs}</td>
+            <td className="text-center">{item.point}</td>
           </tr>
         ))}
         {/* <tr>

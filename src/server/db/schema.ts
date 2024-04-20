@@ -45,6 +45,7 @@ export const submissions = createTable(
   {
     id: serial("id").primaryKey(),
     userId: varchar("userid", {length: 256}).notNull(),
+    problemId: integer("problem_id").notNull(),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),

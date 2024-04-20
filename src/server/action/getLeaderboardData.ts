@@ -9,7 +9,7 @@ const leaderboardDataShape = z.array(
         rank: z.string(),
         rankNum: z.number(),
         solved: z.number(),
-        gs: z.number(),
+        point: z.number(),
     })
 )
 
@@ -27,7 +27,7 @@ export default async function getLeaderboardData() {
             rank: getTextRank(user.rank),
             rankNum: user.rank,
             solved: user.solved,
-            gs: user.gs
+            point: user.point
         })
     })
 
