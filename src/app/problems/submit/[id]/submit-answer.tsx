@@ -29,18 +29,18 @@ export default function SubmitAnswer ({id, pass}: {id: number, pass:boolean}) {
         try {
 
             const {result: correct, point} = await fetch("/api/submit", {method: "post", body: JSON.stringify({id, answer})}).then(res => res.json())
-            if (point) {
-                if (typeof point == "number") {
-                    setPointReceive(point)
-                }
-            }
             toast.dismiss("checking-answer")
             if(correct) {
-                toast.success("ยินดีด้วยคุณผ่านแล้วว เย้!!")
+                toast.success("ยินดีด้วยคุณผ่านแล้วว เย้!!", {dismissible: true})
                 setPass(true)
                 router.refresh()
             }
             else toast.error("ไม่น้า คำตอบของคุณผิด T-T")
+            if (point != 0) {
+                toast(<div>
+                    {"คุณได้รับ " + point + " แต้ม"}
+                </div>, {dismissible: true})
+            }
         }
         catch(e) {
             toast.dismiss("checking-answer")
