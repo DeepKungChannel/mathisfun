@@ -10,6 +10,7 @@ export const revalidate = 30
 export default async function ProblemsPage() {
 
     const mathproblems = await db.query.mathProblems.findMany({
+        where: (problem, {eq}) => eq(problem.visibility, 0),
         orderBy: (problem, { asc }) => [asc(problem.gs)],
     })
     const userdata = await getUserData()

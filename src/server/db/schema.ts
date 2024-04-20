@@ -35,6 +35,7 @@ export const mathProblems = createTable(
     gs: integer("gs").notNull(),
     solved_user_count: integer("solved_user_count").notNull().default(0),
     answer: varchar("answer", { length: 256 }).notNull(),
+    visibility: integer("visibility").notNull().default(0), // lower = public, higher = need roles to see
   },
   (example) => ({
     nameIndex: index("name_idx").on(example.name),
@@ -81,5 +82,6 @@ export const users = createTable(
     rank: integer("rank").notNull().default(0),
     solved: integer("solved").notNull().default(0),
     gs: integer("gs").notNull().default(100),
+    role: integer("role").notNull().default(0)
   }
 )
