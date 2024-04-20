@@ -27,7 +27,7 @@ const kanit = Kanit({
 export const metadata = {
     title: "Math is fun. Guys!",
     description: "Website that help people learn math in fun way",
-    icons: [{ rel: "icon", url: "/favicon.ico" }],
+    icons: [{ rel: "icon", url: "/icon.ico" }],
 };
 
 function getAllfontClass() {
