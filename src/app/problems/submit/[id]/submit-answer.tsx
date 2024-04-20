@@ -55,7 +55,7 @@ export default function SubmitAnswer ({id, pass}: {id: number, pass:boolean}) {
         <>
         <form onSubmit={(e) => { CheckAnswer(InputTag.current!.value); e.preventDefault()}}>
             <Label htmlFor="answer" className='text-[1.06rem] pl-1'>คำตอบ</Label>
-            <Input disabled={pass2 || pass} ref={InputTag} type='text' placeholder='xx.xx' id="answer" className='mt-1 mb-5 focus-visible:ring-0 focus: ring-0' />
+            <Input disabled={pass2 || pass} ref={InputTag} type='text' placeholder='xx.xx' id="answer" className='mt-1 mb-5 focus-visible:ring-0 focus: ring-0' required/>
             <Button type='submit' disabled={pass2 || pass}>ส่งคำตอบ</Button>
         </form>
         </>
