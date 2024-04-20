@@ -11,6 +11,9 @@ import { useRouter } from 'next/navigation'
 export default function SubmitAnswer ({id, pass}: {id: number, pass:boolean}) {
     const [checking, setChecking] = useState(false);
     const [pass2, setPass] = useState(false);
+
+    const [pointReceive, setPointReceive] = useState<number>(0)
+
     const router = useRouter()
 
     const InputTag = useRef<HTMLInputElement| null>(null)
@@ -25,7 +28,8 @@ export default function SubmitAnswer ({id, pass}: {id: number, pass:boolean}) {
         toast.loading("กําลังตรวจสอบคำตอบของคุณ...", {id: "checking-answer"})
         try {
 
-            const {result: correct} = await fetch("/api/submit", {method: "post", body: JSON.stringify({id, answer})}).then(res => res.json())
+            const {result: correct, point} = await fetch("/api/submit", {method: "post", body: JSON.stringify({id, answer})}).then(res => res.json())
+            if (point) setPointReceive(point)
         
             toast.dismiss("checking-answer")
             if(correct) {

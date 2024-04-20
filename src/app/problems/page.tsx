@@ -2,6 +2,7 @@ import React from 'react'
 import { db } from '~/server/db'
 import MathProblemTable from './MathProblemTable'
 import { auth } from '@clerk/nextjs/server'
+import getUserData from '~/server/action/getUser'
 
 //export const dynamic = 'force-static'
 export const revalidate = 30
@@ -11,12 +12,12 @@ export default async function ProblemsPage() {
     const mathproblems = await db.query.mathProblems.findMany({
         orderBy: (problem, { asc }) => [asc(problem.gs)],
     })
-    const user = auth()
+    const userdata = await getUserData()
 
     let solved_problems = [] as any[] // come on man it's annoying
-    if (user.userId) {
+    if (userdata?.id) {
         solved_problems = await db.query.solved_math_problem.findMany({
-            where: (sp, { eq }) => eq(sp.userId, user.userId)
+            where: (sp, { eq }) => eq(sp.userId, userdata.userId)
         })
     }
 

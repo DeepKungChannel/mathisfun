@@ -9,10 +9,9 @@ import { users } from '~/server/db/schema'
 import { eq } from 'drizzle-orm'
 
 export default async function LeaderboardPage() {
-    const user = auth()
 
-    let clerkuser = await getClerkUser(user.userId)
-    const userdata = await getUserData(user.userId)
+    let clerkuser = await getClerkUser()
+    const userdata = await getUserData()
 
     // update user imageUrl if it doesn't match
     if (clerkuser?.imageUrl !== userdata?.imageUrl && userdata) {

@@ -1,13 +1,14 @@
 "use server"
-import { clerkClient, User } from "@clerk/nextjs/server";
+import { clerkClient, currentUser, User } from "@clerk/nextjs/server";
 import { count, sql } from "drizzle-orm";
 import { db } from "~/server/db";
 import { solved_math_problem, users } from "~/server/db/schema";
 
-export default async function getUserData(userId: string | null) {
-    if (!userId) return null
+export default async function getUserData() {
 
-    const Clerk_user = await getClerkUser(userId)
+    const Clerk_user = await getClerkUser()
+    if (!Clerk_user) return null
+    const userId =  Clerk_user.id
     if (!Clerk_user) return null
     // Check if user exists in personal db
     let user = await db.query.users.findFirst({
@@ -33,11 +34,13 @@ export default async function getUserData(userId: string | null) {
         })
     }
 
-    return user
+    return user as typeof users['_']['inferSelect']
 }
 
-export async function getClerkUser(userId: string | null) {
-    if (!userId) return null
+export async function getClerkUser() {
+    const user = await currentUser() 
+    if (!user) return null
+    const userId = user.id
     let Clerk_user: User | null = null
     try {
         Clerk_user = await clerkClient.users.getUser(userId)
