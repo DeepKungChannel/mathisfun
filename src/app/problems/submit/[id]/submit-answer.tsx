@@ -12,7 +12,7 @@ export default function SubmitAnswer ({id, pass}: {id: number, pass:boolean}) {
     const [checking, setChecking] = useState(false);
     const [pass2, setPass] = useState(false);
 
-    const [pointReceive, setPointReceive] = useState<number>(0)
+    const [pointReceive, setPointReceive] = useState(0)
 
     const router = useRouter()
 
@@ -29,8 +29,11 @@ export default function SubmitAnswer ({id, pass}: {id: number, pass:boolean}) {
         try {
 
             const {result: correct, point} = await fetch("/api/submit", {method: "post", body: JSON.stringify({id, answer})}).then(res => res.json())
-            if (point) setPointReceive(point)
-        
+            if (point) {
+                if (typeof point == "number") {
+                    setPointReceive(point)
+                }
+            }
             toast.dismiss("checking-answer")
             if(correct) {
                 toast.success("ยินดีด้วยคุณผ่านแล้วว เย้!!")
