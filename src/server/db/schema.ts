@@ -33,6 +33,7 @@ export const mathProblems = createTable(
     url: varchar("url", { length: 256 }).notNull(),
     graderId: varchar("grader_id", {length: 256}).notNull().default("number"),
     gs: integer("gs").notNull(),
+    solved_user_count: integer("solved_user_count").notNull().default(0),
     answer: varchar("answer", { length: 256 }).notNull(),
   },
   (example) => ({
@@ -63,7 +64,8 @@ export const solved_math_problem = createTable(
       .notNull(),
     lastSolvedAt: timestamp("last_solved_at")
       .default(sql`CURRENT_TIMESTAMP`)
-      .notNull()
+      .notNull(),
+    solved_count: integer("solved_count").notNull().default(0),
   }
 );
 
