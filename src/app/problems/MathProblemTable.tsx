@@ -32,7 +32,7 @@ export default function MathProblemTable({data, signedin}: {data: MathProblemTyp
             signedin && 
             <div className='ml-7 md:ml-12 my-3 flex items-center gap-2'>
                 <Checkbox defaultChecked={true} onCheckedChange={(e) => {setShowSolve(e as boolean)}} id="solved-checkbox"/>
-                <label htmlFor="solved-checkbox">แสดงข้อที่ทำแล้ว</label>
+                <label htmlFor="solved-checkbox" className='select-none cursor-pointer'>แสดงข้อที่ทำแล้ว</label>
             </div>
         }
         <div className='mx-5 md:mx-10 overflow-y-auto border-[1px] border-gray-200 shadow-md shadow-[#c5c5c5]'>

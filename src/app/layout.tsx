@@ -4,6 +4,7 @@ import { Inter, Kanit, Montserrat } from "next/font/google";
 import TopNav from "./components/TopNav";
 import { NextFontWithVariable } from "next/dist/compiled/@next/font";
 import { Toaster } from "~/components/ui/sonner"
+import { Analytics } from "@vercel/analytics/react"
 
 const inter = Inter({
     subsets: ["latin"],
@@ -46,6 +47,7 @@ export default function RootLayout({
                     <TopNav/>
                     {children}
                     <Toaster richColors theme="light" expand={true}/>
+                    <Analytics />
                 </body>
             </html>
         </ClerkProvider>
