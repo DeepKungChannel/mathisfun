@@ -42,7 +42,7 @@ export default async function ProblemsPage() {
             
             <div className='text-2xl p-5'>คลังโจทย์คณิตศาสตร์</div>
             <div>
-                <MathProblemTable data={new_mathproblems} />
+                <MathProblemTable data={new_mathproblems} signedin={userdata ? true: false}/>
             </div>
             {/* <div className="w-full h-[95vh] flex justify-center items-center">
             Please Login before using this page...

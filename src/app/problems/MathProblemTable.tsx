@@ -1,6 +1,7 @@
 "use client"
 import { useRouter } from 'next/navigation';
 import React from 'react'
+import { Checkbox } from '~/components/ui/checkbox';
 
 type MathProblemType = {
     gs: number;
@@ -23,9 +24,17 @@ function SendAnswerSVG({id, pass, ...props} : {id: number, pass: boolean, [x:str
     )
 }
 
-export default function MathProblemTable({data}: {data: MathProblemType}) {
-    
+export default function MathProblemTable({data, signedin}: {data: MathProblemType, signedin: boolean}) {
+    const [showSolve, setShowSolve] = React.useState(signedin)
     return (
+        <>
+        {
+            signedin && 
+            <div className='ml-7 md:ml-12 my-3 flex items-center gap-2'>
+                <Checkbox defaultChecked={true} onCheckedChange={(e) => {setShowSolve(e as boolean)}} id="solved-checkbox"/>
+                <label htmlFor="solved-checkbox">แสดงข้อที่ทำแล้ว</label>
+            </div>
+        }
         <div className='mx-5 md:mx-10 overflow-y-auto border-[1px] border-gray-200 shadow-md shadow-[#c5c5c5]'>
             <table className='w-full font-kanit'>
                 <thead className='border-gray-200 border-b-2 font-light'>
@@ -39,9 +48,17 @@ export default function MathProblemTable({data}: {data: MathProblemType}) {
                 </thead>
                 <tbody>
                     {data.map((item, index) => (
-                    <tr key={index} className={`${item.solved? (index%2 != 0 ?"bg-[#1ea843] text-[#ffffff]" : "bg-[#1b9d3e] text-[#ffffff]") : (index%2 != 0 ? "bg-[#efefef]" : "bg-[#e8e8e8]")}`}>
-                        <td className={`border-r-2 border-[#c7c7c7] py-3 px-5 cursor-pointer ${item.solved ? "hover:bg-[#2a9451]" : "hover:bg-[#c7c7c7]"}`} onClick={() => {window.open(item.url, "_blank")}}>{item.name}</td>
-                        <td className='p-3 border-r-[1px] border-[#c7c7c7] flex justify-center'><SendAnswerSVG id={item.id} pass={item.solved} className="w-5 p-[0.1rem] cursor-pointer"/></td>
+                    <tr key={index} className={`${
+                        item.solved && showSolve?
+                            (index%2 != 0 ?"bg-[#1ea843] text-[#ffffff]" : "bg-[#1b9d3e] text-[#ffffff]") : 
+                            (index%2 != 0 ? "bg-[#efefef]" : "bg-[#e8e8e8]")
+                        }`}>
+                        <td className={`border-r-2 border-[#c7c7c7] py-3 px-5 cursor-pointer ${
+                            item.solved && showSolve ? 
+                            "hover:bg-[#2a9451]" : 
+                            "hover:bg-[#c7c7c7]" }`
+                            } onClick={() => {window.open(item.url, "_blank")}}>{item.name}</td>
+                        <td className='p-3 border-r-[1px] border-[#c7c7c7] flex justify-center'><SendAnswerSVG id={item.id} pass={item.solved && showSolve} className="w-5 p-[0.1rem] cursor-pointer"/></td>
                         <td className='p-3 border-r-[1px] border-[#c7c7c7] text-center'>{item.gs}</td>
                         <td className='p-3 border-r-[1px] border-[#c7c7c7] text-center'>{item.createdAt.getFullYear()}</td>
                         <td className='p-3 text-center'>{item.solved_user_count}</td>
@@ -50,6 +67,6 @@ export default function MathProblemTable({data}: {data: MathProblemType}) {
                 </tbody>
             </table>
         </div>
-        
+        </>
     )
 }
