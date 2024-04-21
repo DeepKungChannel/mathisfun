@@ -23,7 +23,7 @@ export default async function LeaderboardPage() {
     const leaderboard_data = await getLeaderboardData()
 
     return (
-        <div className='px-5 md:px-7 pt-20 font-kanit'>
+        <div className='px-5 md:px-7 pt-20 font-kanit pb-5'>
             {userdata && ( // if userdata is valid which mean clerkuser have to valid because to get userdata we need clerkuser
                 <>
                 <h1 className='text-2xl font-normal font-kanit mb-1 mt-2'>Your profile</h1>

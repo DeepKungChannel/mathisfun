@@ -4,6 +4,7 @@ import { z } from "zod";
 import getUserData, { getProblemSolveNumber, getUserSolveNumber } from "~/server/action/getUser";
 import { db } from "~/server/db";
 import { mathProblems, solved_math_problem, submissions, users } from "~/server/db/schema";
+import checkStringWithNumberAnswer from "./string-with-number";
 
 export async function POST(request: Request) {
     const data = (await request.json())
@@ -100,12 +101,31 @@ export async function POST(request: Request) {
 function checkAnswer(answer: string, mathproblem: typeof mathProblems['_']['inferSelect']) {
     
     if (mathproblem.graderId == "number"){
-        if (parseFloat(mathproblem.answer) == parseFloat(answer)) return true
-        else return false
+        return MultipleAnswer(answer, mathproblem.answer, (answer, solution) => {
+            if (parseFloat(answer) == parseFloat(solution)) return true
+            return false
+        })
+    }
+    else if (mathproblem.graderId == "string_with_number") {
+        const value = MultipleAnswer(answer, mathproblem.answer, checkStringWithNumberAnswer)
+        console.log(value)
+        return value
     }
     
     
-    // else or 'string' case
-    if (answer.trim() == mathproblem.answer) return true;
-    return false
+    // 'string' case or another graderId
+    return MultipleAnswer(answer, mathproblem.answer, (answer, solution) => {
+        return (answer.trim() == solution)
+    })    
+}
+
+function MultipleAnswer<T extends (answer: string, solution: string) => boolean>(answer: string, solution: string, checkAnswerFunction: T) {
+    const sols = solution.split("|")
+    let pass = false
+    sols.map(sol => {
+        if (pass) return
+        if (checkAnswerFunction(answer, sol)) pass = true
+    })
+
+    return pass
 }

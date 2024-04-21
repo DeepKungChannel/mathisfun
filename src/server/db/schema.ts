@@ -35,6 +35,7 @@ export const mathProblems = createTable(
     gs: integer("gs").notNull(),
     solved_user_count: integer("solved_user_count").notNull().default(0),
     answer: varchar("answer", { length: 256 }).notNull(),
+    tag: varchar("tag", { length: 1000 }).notNull().default(""),
     visibility: integer("visibility").notNull().default(0), // lower = public, higher = need roles to see
   },
   (example) => ({
