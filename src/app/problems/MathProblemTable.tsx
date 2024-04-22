@@ -53,15 +53,10 @@ export default function MathProblemTable({data, signedin}: {data: MathProblemTyp
             setSearchResult(result)
         }
         else {
-            setSearchResult(new Array)
+            setSearchResult([])
         }
     }
 
-    useEffect(() => {
-        if (searchResult.length > 0) {
-            console.log("Score:", searchResult[0]!.score)
-        }else console.log("Nothing...")
-    }, [searchResult])
     return (
         <>
         <div className="ml-7 md:ml-10 my-3 flex items-end">
