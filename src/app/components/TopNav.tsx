@@ -18,7 +18,7 @@ export default function TopNav() {
                 <div><Link href='/' className="md:ml-5" onClick={() => setShow(false)}>Home</Link></div>
                 <div><Link href='/problems' onClick={() => setShow(false)}>Problem</Link></div>
                 <div><Link href='/leaderboard' onClick={() => setShow(false)}>Leaderboard</Link></div>
-                <div><Link href='/' onClick={() => setShow(false)}>Contest</Link></div>
+                <div><Link href='/knowledge' onClick={() => setShow(false)}>Knowledge</Link></div>
             </div>
             <SignedIn>
                 <div className='ml-auto pr-5 flex items-center'>

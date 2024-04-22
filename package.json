@@ -25,6 +25,7 @@
     "clsx": "^2.1.0",
     "drizzle-orm": "^0.29.4",
     "lucide-react": "^0.371.0",
+    "minisearch": "^6.3.0",
     "next": "^14.3.0-canary.11",
     "next-themes": "^0.3.0",
     "postgres": "^3.4.3",

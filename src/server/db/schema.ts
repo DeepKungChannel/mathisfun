@@ -43,6 +43,21 @@ export const mathProblems = createTable(
   })
 );
 
+export const mathKnowledges = createTable(
+  "math_knowledges",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 256 }).notNull(),
+    url: varchar("url", { length: 256 }).notNull(),
+    grade_level: varchar("grade_level", { length: 256 }).notNull(),
+    grade_level_number: integer("grade_number").notNull(),
+    visibility: integer("visibility").default(0).notNull(),
+    updateAt: timestamp("update_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  }
+)
+
 export const submissions = createTable(
   "math_submissions",
   {
