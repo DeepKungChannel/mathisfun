@@ -18,6 +18,6 @@ function MakeEveryNumberToFloatInString(text: string){
         return FloatNumber.toFixed(2).toString()
     }
 
-    return text.replace(pattern, replaceFunction)
+    return text.replaceAll(pattern, replaceFunction)
     
 }

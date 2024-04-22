@@ -1,18 +1,28 @@
 "use client"
 import { useRouter } from 'next/navigation';
-import React from 'react'
+import React, { ChangeEvent, useEffect } from 'react'
+import { StringUtils } from 'turbocommons-ts';
 import { Checkbox } from '~/components/ui/checkbox';
-
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '~/components/ui/dropdown-menu';
+import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
 type MathProblemType = {
     gs: number;
     id: number;
-    name: string | null;
+    name: string;
     createdAt: Date;
     updatedAt: Date | null;
     url: string;
     solved: boolean;
     solved_user_count: number;
+    tag: string
 }[]
+
+type SearchResult = {
+    score: number
+    data: MathProblemType[0]
+} []
 
 function SendAnswerSVG({id, pass, ...props} : {id: number, pass: boolean, [x:string]: any}) {
     const router = useRouter();
@@ -26,15 +36,57 @@ function SendAnswerSVG({id, pass, ...props} : {id: number, pass: boolean, [x:str
 
 export default function MathProblemTable({data, signedin}: {data: MathProblemType, signedin: boolean}) {
     const [showSolve, setShowSolve] = React.useState(signedin)
+    const [searchResult, setSearchResult] = React.useState<SearchResult>([])
+
+    function search(e: ChangeEvent<HTMLInputElement>) {
+        const query = e.target.value
+        if (query !== "") {
+            let result: SearchResult = []
+            data.map((problem) => {
+                const score = (StringUtils.compareSimilarityPercent(query.replaceAll(" ", ""), problem.name)*2 + StringUtils.compareSimilarityPercent(query.replaceAll(" ", ""), problem.tag))/2
+                if (score > 3) {
+                    result.push({score, data: problem})
+                }
+            })
+
+            result.sort((a, b) => b.score - a.score)
+            setSearchResult(result)
+        }
+        else {
+            setSearchResult(new Array)
+        }
+    }
+
+    useEffect(() => {
+        if (searchResult.length > 0) {
+            console.log("Score:", searchResult[0]!.score)
+        }else console.log("Nothing...")
+    }, [searchResult])
     return (
         <>
-        {
-            signedin && 
-            <div className='ml-7 md:ml-12 my-3 flex items-center gap-2'>
-                <Checkbox defaultChecked={true} onCheckedChange={(e) => {setShowSolve(e as boolean)}} id="solved-checkbox"/>
-                <label htmlFor="solved-checkbox" className='select-none cursor-pointer'>แสดงข้อที่ทำแล้ว</label>
+        <div className="ml-7 md:ml-10 my-3 flex items-end">
+            {
+                signedin && 
+                <div className='flex items-center gap-2'>
+                    <Checkbox defaultChecked={true} onCheckedChange={(e) => {setShowSolve(e as boolean)}} id="solved-checkbox"/>
+                    <label htmlFor="solved-checkbox" className='select-none cursor-pointer'>แสดงข้อที่ทำแล้ว</label>
+                </div>
+            }
+            <div className='ml-auto mr-7 md:mr-10 flex gap-3'>
+                {/* <Popover>
+                    <PopoverTrigger className='font-kanit border-[1px] border-gray-200 rounded-sm py-1 px-3 font-light text-sm'>Filter</PopoverTrigger>
+                    <PopoverContent className='w-fit flex flex-col gap-3 font-kanit'>
+                        <div className="flex items-center gap-2"><Checkbox id='filter1' className='h-[0.95rem] w-[0.95rem] border-gray-600'/><Label className='font-normal' htmlFor='filter1'>ความน่าจะเป็น</Label></div>
+                        <div className="flex items-center gap-2"><Checkbox id='filter2' className='h-[0.95rem] w-[0.95rem] border-gray-600'/><Label className='font-normal' htmlFor='filter2'>ตรีโกณมิติ</Label></div>
+                        <div className="flex items-center gap-2"><Checkbox id='filter3' className='h-[0.95rem] w-[0.95rem] border-gray-600'/><Label className='font-normal' htmlFor='filter3'>อสมการ</Label></div>
+                        <div className="flex items-center gap-2"><Checkbox id='filter4' className='h-[0.95rem] w-[0.95rem] border-gray-600'/><Label className='font-normal' htmlFor='filter4'>อัตราส่วน</Label></div>
+
+                    </PopoverContent>
+                </Popover> */}
+
+                <Input type='text' onChange={search} placeholder='Search'/>
             </div>
-        }
+        </div>
         <div className='mx-5 md:mx-10 overflow-y-auto border-[1px] border-gray-200 shadow-md shadow-[#c5c5c5]'>
             <table className='w-full font-kanit'>
                 <thead className='border-gray-200 border-b-2 font-light'>
@@ -47,26 +99,36 @@ export default function MathProblemTable({data, signedin}: {data: MathProblemTyp
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((item, index) => (
-                    <tr key={index} className={`${
-                        item.solved && showSolve?
-                            (index%2 != 0 ?"bg-[#1ea843] text-[#ffffff]" : "bg-[#1b9d3e] text-[#ffffff]") : 
-                            (index%2 != 0 ? "bg-[#efefef]" : "bg-[#e8e8e8]")
-                        }`}>
-                        <td className={`border-r-2 border-[#c7c7c7] py-3 px-5 cursor-pointer ${
-                            item.solved && showSolve ? 
-                            "hover:bg-[#2a9451]" : 
-                            "hover:bg-[#c7c7c7]" }`
-                            } onClick={() => {window.open(item.url, "_blank")}}>{item.name}</td>
-                        <td className='p-3 border-r-[1px] border-[#c7c7c7] flex justify-center'><SendAnswerSVG id={item.id} pass={item.solved && showSolve} className="w-5 p-[0.1rem] cursor-pointer"/></td>
-                        <td className='p-3 border-r-[1px] border-[#c7c7c7] text-center'>{item.gs}</td>
-                        <td className='p-3 border-r-[1px] border-[#c7c7c7] text-center'>{item.createdAt.getFullYear()}</td>
-                        <td className='p-3 text-center'>{item.solved_user_count}</td>
-                    </tr>
-                    ))}
+                    {searchResult.length > 0 ? 
+                        <>{searchResult.map((item, index) => (
+                            <Row key={index} item={item.data} index={index} showSolve={showSolve} />
+                        ))}</>
+                        :
+                        <>{data.map((item, index) => (
+                            <Row key={index} item={item} index={index} showSolve={showSolve} />
+                        ))}</>
+                    }
                 </tbody>
             </table>
         </div>
         </>
+    )
+}
+
+function Row({item, index, showSolve}: {item: MathProblemType[0], index:number, showSolve: boolean}) {
+    return (
+        <tr key={index} className={`${item.solved && showSolve ?
+            (index % 2 != 0 ? "bg-[#1ea843] text-[#ffffff]" : "bg-[#1b9d3e] text-[#ffffff]") :
+            (index % 2 != 0 ? "bg-[#efefef]" : "bg-[#e8e8e8]")
+        }`}>
+            <td className={`border-r-2 border-[#c7c7c7] py-3 px-5 cursor-pointer ${item.solved && showSolve ?
+                    "hover:bg-[#2a9451]" :
+                    "hover:bg-[#c7c7c7]"}`
+            } onClick={() => { window.open(item.url, "_blank") }}>{item.name}</td>
+            <td className='p-3 border-r-[1px] border-[#c7c7c7] flex justify-center'><SendAnswerSVG id={item.id} pass={item.solved && showSolve} className="w-5 p-[0.1rem] cursor-pointer" /></td>
+            <td className='p-3 border-r-[1px] border-[#c7c7c7] text-center'>{item.gs}</td>
+            <td className='p-3 border-r-[1px] border-[#c7c7c7] text-center'>{item.createdAt.getFullYear()}</td>
+            <td className='p-3 text-center'>{item.solved_user_count}</td>
+        </tr>
     )
 }
