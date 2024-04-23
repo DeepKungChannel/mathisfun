@@ -7,24 +7,15 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
-type MathProblemType = {
-    gs: number;
-    id: number;
-    name: string;
-    createdAt: Date;
-    updatedAt: Date | null;
-    url: string;
-    solved: boolean;
-    solved_user_count: number;
-    tag: string
-}[]
+import { FilteredMathproblemsType } from './page';
+export type MathProblemType = FilteredMathproblemsType
 
 type SearchResult = {
     score: number
     data: MathProblemType[0]
 } []
 
-function SendAnswerSVG({id, pass, ...props} : {id: number, pass: boolean, [x:string]: any}) {
+export function SendAnswerSVG({id, pass, ...props} : {id: number, pass: boolean, [x:string]: any}) {
     const router = useRouter();
 
     return (
@@ -59,15 +50,16 @@ export default function MathProblemTable({data, signedin}: {data: MathProblemTyp
 
     return (
         <>
-        <div className="ml-7 md:ml-10 my-3 flex items-end">
+        <h3 className="ml-7 md:ml-10 text-xl font-kanit absolute -top-9 md:-top-6">โจทย์ทั้งหมด</h3>
+        <div className="ml-7 md:ml-10 my-3 flex md:items-end mt-[5rem] md:mt-6 flex-col md:flex-row gap-2 md:gap-0">
             {
-                signedin && 
+                signedin && <>
                 <div className='flex items-center gap-2'>
                     <Checkbox defaultChecked={true} onCheckedChange={(e) => {setShowSolve(e as boolean)}} id="solved-checkbox"/>
                     <label htmlFor="solved-checkbox" className='select-none cursor-pointer'>แสดงข้อที่ทำแล้ว</label>
-                </div>
+                </div></>
             }
-            <div className='ml-auto mr-7 md:mr-10 flex gap-3'>
+            <div className='md:ml-auto mr-7 md:mr-10 flex gap-3'>
                 {/* <Popover>
                     <PopoverTrigger className='font-kanit border-[1px] border-gray-200 rounded-sm py-1 px-3 font-light text-sm'>Filter</PopoverTrigger>
                     <PopoverContent className='w-fit flex flex-col gap-3 font-kanit'>
@@ -79,7 +71,7 @@ export default function MathProblemTable({data, signedin}: {data: MathProblemTyp
                     </PopoverContent>
                 </Popover> */}
 
-                <Input type='text' onChange={search} placeholder='Search'/>
+                <Input type='text' onChange={search} placeholder='Search' className='w-full md:w-[14rem] focus:border-gray-600'/>
             </div>
         </div>
         <div className='mx-5 md:mx-10 overflow-y-auto border-[1px] border-gray-200 shadow-md shadow-[#c5c5c5]'>

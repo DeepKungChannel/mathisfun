@@ -25,7 +25,7 @@ export const mathProblems = createTable(
   "math_problems",
   {
     id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
+    name: varchar("name", { length: 256 }).notNull(),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
@@ -42,6 +42,14 @@ export const mathProblems = createTable(
     nameIndex: index("name_idx").on(example.name),
   })
 );
+
+export const NewMathProblems = createTable(
+  "math_new_problems",
+  {
+    id: serial("id").primaryKey(),
+    problemId: integer("problem_id").notNull(),
+  }
+)
 
 export const mathKnowledges = createTable(
   "math_knowledges",
