@@ -43,7 +43,7 @@ export default function MathProblemTable({data, signedin}: {data: MathProblemTyp
         if (query !== "") {
             let result: SearchResult = []
             data.map((problem) => {
-                const score = (StringUtils.compareSimilarityPercent(query.replaceAll(" ", ""), problem.name)*2 + StringUtils.compareSimilarityPercent(query.replaceAll(" ", ""), problem.tag))/2
+                const score = (StringUtils.compareSimilarityPercent(query.replaceAll(" ", "").toLowerCase(), problem.name.toLowerCase())*2 + StringUtils.compareSimilarityPercent(query.replaceAll(" ", "").toLowerCase(), problem.tag.toLowerCase()))/2
                 if (score > 3) {
                     result.push({score, data: problem})
                 }
