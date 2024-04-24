@@ -76,6 +76,7 @@ export default async function ProblemsPage() {
     const new_mathproblems_ids = new_mathproblems_data.map(data => data.problemId)
     const new_mathproblems = filtered_mathproblems.filter(problem => new_mathproblems_ids.includes(problem.id))
 
+    new_mathproblems.sort((a, b) => a.id - b.id)
 
     return (
         <div className="pt-16 font-kanit pb-10">
