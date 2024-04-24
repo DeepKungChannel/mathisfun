@@ -102,7 +102,7 @@ export default function MathProblemTable({data, signedin}: {data: MathProblemTyp
     )
 }
 
-function Row({item, index, showSolve}: {item: MathProblemType[0], index:number, showSolve: boolean}) {
+export function Row({item, index, showSolve}: {item: MathProblemType[0], index:number, showSolve: boolean}) {
     return (
         <tr key={index} className={`${item.solved && showSolve ?
             (index % 2 != 0 ? "bg-[#1ea843] text-[#ffffff]" : "bg-[#1b9d3e] text-[#ffffff]") :
@@ -111,11 +111,36 @@ function Row({item, index, showSolve}: {item: MathProblemType[0], index:number, 
             <td className={`border-r-2 border-[#c7c7c7] py-3 px-5 cursor-pointer ${item.solved && showSolve ?
                     "hover:bg-[#2a9451]" :
                     "hover:bg-[#c7c7c7]"}`
-            } onClick={() => { window.open(item.url, "_blank") }}>{item.name}</td>
-            <td className='p-3 border-r-[1px] border-[#c7c7c7] flex justify-center'><SendAnswerSVG id={item.id} pass={item.solved && showSolve} className="w-5 p-[0.1rem] cursor-pointer" /></td>
+            } onClick={() => { window.open(item.url, "_blank") }}>
+                <div className='flex flex-col md:flex-row gap-3'>
+                    <p>{item.name}</p>
+                    {
+                        item.tag &&
+                        <div className='flex gap-3'>
+                            <>
+                            {item.tag.split(',').map((tag,index) => (
+                                
+                                <ProblemTag key={index}>{tag}</ProblemTag>
+                            
+                            ))}
+                            </>
+                        </div>
+                    }
+                </div>
+            </td>
+            <td className='p-3 border-r-[1px] border-[#c7c7c7]'><div className='flex justify-center items-center'><SendAnswerSVG id={item.id} pass={item.solved && showSolve} className="w-5 p-[0.1rem] cursor-pointer" /></div></td>
             <td className='p-3 border-r-[1px] border-[#c7c7c7] text-center'>{item.gs}</td>
             <td className='p-3 border-r-[1px] border-[#c7c7c7] text-center'>{item.createdAt.getFullYear()}</td>
             <td className='p-3 text-center'>{item.solved_user_count}</td>
         </tr>
     )
+}
+
+function ProblemTag({children} : {children: React.ReactNode}) {
+    return (
+        <div className='bg-[#dcdcdc] text-[0.7rem] py-[0.15rem] px-[0.7em] rounded-md text-[#171717] flex items-center'>
+            {children}
+        </div>
+    )
+
 }

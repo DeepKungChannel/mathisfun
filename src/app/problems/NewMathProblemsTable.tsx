@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { MathProblemType, SendAnswerSVG } from "./MathProblemTable"
+import { MathProblemType, Row, SendAnswerSVG } from "./MathProblemTable"
 import { Checkbox } from "~/components/ui/checkbox"
 
 export default function NewMathProblemsTable({data, signedin}: {data: MathProblemType, signedin: boolean}) {
@@ -45,20 +45,20 @@ export default function NewMathProblemsTable({data, signedin}: {data: MathProble
     )
 }
 
-function Row({item, index, showSolve}: {item: MathProblemType[0], index:number, showSolve: boolean}) {
-    return (
-        <tr key={index} className={`${item.solved && showSolve ?
-            (index % 2 != 0 ? "bg-[#1ea843] text-[#ffffff]" : "bg-[#1b9d3e] text-[#ffffff]") :
-            (index % 2 != 0 ? "bg-[#efefef]" : "bg-[#e8e8e8]")
-        }`}>
-            <td className={`border-r-2 border-[#c7c7c7] py-3 px-5 cursor-pointer ${item.solved && showSolve ?
-                    "hover:bg-[#2a9451]" :
-                    "hover:bg-[#c7c7c7]"}`
-            } onClick={() => { window.open(item.url, "_blank") }}>{item.name}</td>
-            <td className='p-3 border-r-[1px] border-[#c7c7c7] flex justify-center'><SendAnswerSVG id={item.id} pass={item.solved && showSolve} className="w-5 p-[0.1rem] cursor-pointer" /></td>
-            <td className='p-3 border-r-[1px] border-[#c7c7c7] text-center'>{item.gs}</td>
-            <td className='p-3 border-r-[1px] border-[#c7c7c7] text-center'>{item.createdAt.getFullYear()}</td>
-            <td className='p-3 text-center'>{item.solved_user_count}</td>
-        </tr>
-    )
-}
+// function Row({item, index, showSolve}: {item: MathProblemType[0], index:number, showSolve: boolean}) {
+//     return (
+//         <tr key={index} className={`${item.solved && showSolve ?
+//             (index % 2 != 0 ? "bg-[#1ea843] text-[#ffffff]" : "bg-[#1b9d3e] text-[#ffffff]") :
+//             (index % 2 != 0 ? "bg-[#efefef]" : "bg-[#e8e8e8]")
+//         }`}>
+//             <td className={`border-r-2 border-[#c7c7c7] py-3 px-5 cursor-pointer ${item.solved && showSolve ?
+//                     "hover:bg-[#2a9451]" :
+//                     "hover:bg-[#c7c7c7]"}`
+//             } onClick={() => { window.open(item.url, "_blank") }}>{item.name}</td>
+//             <td className='p-3 border-r-[1px] border-[#c7c7c7] flex justify-center'><SendAnswerSVG id={item.id} pass={item.solved && showSolve} className="w-5 p-[0.1rem] cursor-pointer" /></td>
+//             <td className='p-3 border-r-[1px] border-[#c7c7c7] text-center'>{item.gs}</td>
+//             <td className='p-3 border-r-[1px] border-[#c7c7c7] text-center'>{item.createdAt.getFullYear()}</td>
+//             <td className='p-3 text-center'>{item.solved_user_count}</td>
+//         </tr>
+//     )
+// }
